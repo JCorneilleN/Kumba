@@ -1,0 +1,120 @@
+#:kivy 2.3.0
+MDScreen:
+    name: "driver"
+
+    BoxLayout:
+        orientation:'horizontal'
+        halign: 'center'
+        spacing: '10dp'
+        padding: '3dp'
+        pos_hint: {"center_y": 1.4}
+        canvas.before:
+            Color:
+                rgba: 0, 1, 0, 1  # Green background
+            Rectangle:
+                pos: self.pos
+                size: self.size 
+
+        
+        MDIconButton:
+            icon: "arrow-left"
+            #pos_hint: {"center_y": 1.3}
+            user_font_size: "30sp"
+            theme_text_color: "Custom"
+            text_color: rgba(26, 24, 58, 255)
+            on_release:
+                root.manager.transition.direction = "right"
+                root.manager.current = "home"  
+
+        MDLabel:
+            text: "D R I V E R"
+            font_size: "26sp"
+            theme_text_color: "Custom"
+            text_color: 0, 0, 0, 1  # RGB for black with full opacity
+            size_hint_y: None
+            height: self.texture_size[1]  # Adjust height to text content
+            # You can uncomment and adjust the pos_hint as needed
+            # pos_hint: {"center_x": 1.4, "center_y": .85}
+
+        
+    MDBoxLayout:
+        size_hint_y: None
+        orientation: "vertical"
+        height: dp(150)
+        padding: "10dp"
+        spacing: "10dp"
+        halign: "center"
+        pos_hint: {"center_y": .14}
+
+        
+    
+
+        MDAutocompleteTextField:
+            id: from_address
+            hint_text: "From Address"
+            mode: "round"
+            icon_right: "map-search-outline"
+            
+
+        MDAutocompleteTextField:
+            id: to_address
+            hint_text: "To Address"
+            mode: "round"
+            icon_right: "map-marker-distance"
+
+                    #TRavel Date
+        MDTextField:
+            
+            id: travel_date
+            hint_text: "Travel Date"
+            mode: "round"
+            icon_right: "calendar"
+            readonly: True  # Makes it non-editable; only clickable
+            on_focus: if self.focus: app.show_date_picker_travel(travel_date)
+            
+        MDTextField:
+            id: time_input
+            hint_text: "Selected Time"
+            mode: "round"
+            size_hint_x: None
+            icon_right: "clock"
+            readonly: True
+            on_focus: if self.focus: app.show_time_picker(time_input)
+            width: 150   
+        
+        MDTextField:
+            id: car_input
+            hint_text: "Year, color, make, and model of your car"
+            mode: "round"
+            icon_right: "car"
+                            
+        MDTextField:
+            id: gas_money
+            hint_text: "Gas money"
+            mode: "round"
+            icon_right: "currency-usd"
+
+        MDTextField:
+            id: social_media
+            hint_text: "@your social media to chat with you"
+            mode: "round"
+            icon_right: "snapchat"
+
+        
+        
+        MDTextField:
+            id: user_text
+            hint_text: "Put in your text"
+            mode: "round"
+            icon_right: "pencil"
+            
+                    
+        MDRaisedButton:
+            text: "Publish it!"
+            size_hint_y: None
+            pos_hint: {"center_x": .5}
+            on_release:if app.validate_driver_inputs(from_address.text, to_address.text, travel_date.text, time_input.text, car_input.text if car_input.text != '' else None, gas_money.text if gas_money.text != '' else None, social_media.text if social_media.text != '' else None):app.on_search_button_press(from_address.text, to_address.text, travel_date.text, gas_money.text, car_input.text, time_input.text, social_media.text)
+
+                
+    
+            

@@ -1,0 +1,35 @@
+#:kivy 2.3.0
+MDScreen:
+    name: 'verify'
+    BoxLayout:
+        orientation: 'vertical'
+        padding: '24dp'
+        spacing: '24dp'
+
+        MDIconButton:
+            icon: "arrow-left"
+            pos_hint: {"center_y": .95}
+            user_font_size: "30sp"
+            theme_text_color: "Custom"
+            text_color: rgba(26, 24, 58, 255)
+            on_release:
+                root.manager.transition.direction = "right"
+                root.manager.current = "signup"
+
+        MDLabel:
+            text: 'Please enter the verification code sent to your email:'
+            halign: 'center'
+            theme_text_color: 'Secondary'
+
+        MDTextField:
+            id: verification_code
+            hint_text: 'Enter verification code'
+            pos_hint: {'center_x': 0.5}
+            size_hint_x: None
+            width: 300
+
+        MDRaisedButton:
+            text: 'Verify'
+            pos_hint: {'center_x': 0.5}
+            on_release: app.verify_code(verification_code.text)
+

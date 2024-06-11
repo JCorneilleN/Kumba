@@ -1,0 +1,119 @@
+#:kivy 2.3.0
+MDScreen:
+    name: "home"
+    
+    MDBottomNavigation:
+        panel_color: "#eeeaea"
+        selected_color_background: "orange"
+        text_color_active: "black"
+
+        MDBottomNavigationItem:
+            name: 'screen 1'
+            text: 'Home'
+            icon: 'home'
+            badge_icon: "numeric-10"
+
+            MDBoxLayout:
+                orientation: 'vertical'
+
+                MDBoxLayout:
+                    size_hint_y: None
+                    height: dp(150)
+                    padding: "20dp"
+                    spacing: "10dp"
+                    orientation: 'horizontal'
+                    pos_hint: {"center_y": .90}
+
+                    MDTextField:
+                        id: from_address
+                        hint_text: "Where to?"
+                        mode: "round"
+                        icon_right: "map-search-outline"
+                        on_focus:
+                            if self.focus: app.switch_to_page()
+                            root.manager.transition.direction = "left"
+
+                    MDRaisedButton:
+                        text: "You are a driver? \n Post a ride"
+                        size_hint: None, None  # Allow custom size
+                        size: "200dp", "48dp"  # Width and Height of the button
+                        md_bg_color: 1, 0, 0, 1  # Red color in RGBA
+                        pos_hint: {"center_x": 0.5}
+                        on_release:
+                            root.manager.transition.direction = "left"
+                            root.manager.current = "driver"
+
+                ScrollView:
+                    MDList:
+                        id: rides_list
+                        padding: "10dp"
+                        spacing: "10dp"
+                        OneLineListItem:
+                            text: "Upcoming Rides"
+                            
+
+
+
+        MDBottomNavigationItem:
+            name: 'screen 4'
+            text: 'Account'
+            icon: 'account'
+            MDBoxLayout:
+                orientation: 'vertical'
+                padding: '20dp'  # General padding around the box
+                spacing: '20dp'  # Reduced spacing between components
+                size_hint_y: None  # Allows box to shrink to content height
+                height: self.minimum_height  # Adjust height based on content
+                halign: 'center'
+                
+                MDLabel:
+                    text: "Welcome, " + app.first_name + " " + app.last_name
+                    halign: "center"
+                    font_style: "H5"
+                    size_hint_y: None  # Allow label to shrink to text height
+                    height: self.texture_size[1]  # Height based on text
+        
+                MDLabel:
+                    text: "Date of Birth: " + app.dob
+                    halign: "center"
+                    size_hint_y: None
+                    height: self.texture_size[1]
+        
+                MDLabel:
+                    text: "Email: " + app.email
+                    halign: "center"
+                    size_hint_y: None
+                    height: self.texture_size[1]
+        
+                MDLabel:
+                    text: "School: " + app.school_input
+                    halign: "center"
+                    size_hint_y: None
+                    height: self.texture_size[1]
+        
+                MDRaisedButton:
+                    text: "Reset Password"
+                    size_hint: None, None
+                    size: "180dp", "36dp"  # Slightly reduced height
+                    halign: "center"
+                    pos_hint: {"center_x": .5}
+                    md_bg_color: 0.1, 0.5, 1, 1  # Blue color
+                    on_release:
+                        app.send_password_reset_email(app.email)  # Assume email is stored in app.email when the user logs in
+        
+                MDRaisedButton:
+                    text: "Log out"
+                    size_hint: None, None  # Allow custom size
+                    size: "200dp", "40dp"  # Slightly reduced height
+                    md_bg_color: 1, 0, 0, 1  # Red color in RGBA
+                    halign: "center"
+                    pos_hint: {"center_x": .5}
+                    on_release:
+                        app.log_out()
+        
+                
+                    
+        
+                
+        
+        

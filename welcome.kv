@@ -1,0 +1,16 @@
+#:kivy 2.3.0
+MDScreen:
+    name: "welcome"
+    MDLabel:
+        text: "Welcome, " + app.first_name + " " + app.last_name
+        halign: "center"
+        pos_hint: {"center_y": .90}
+        font_style: "H5"
+    MDLabel:
+        text: "Date of Birth: " + app.dob
+        pos_hint: {"center_y": .80}
+        halign: "center"
+    MDLabel:
+        text: "Email: " + app.email
+        pos_hint: {"center_y": .70}
+        halign: "center"

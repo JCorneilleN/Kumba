@@ -1,0 +1,257 @@
+#:kivy 2.3.0
+
+MDScreen:
+    name:"signup"
+    MDFloatLayout:
+        md_bg_color: 1, 1, 1, 1
+        MDIconButton:
+            icon: "arrow-left"
+            pos_hint: {"center_y": .95}
+            user_font_size: "30sp"
+            theme_text_color: "Custom"
+            text_color: rgba(26, 24, 58, 255)
+            on_release:
+                root.manager.transition.direction = "right"
+                root.manager.current = "main"
+
+        MDLabel:
+            text: "H i !"
+            #font_name: "BPoppins"
+            font_size: "26sp"
+            pos_hint: {"center_x": .6, "center_y": 1}
+            color: rgba(0, 0, 59, 255)
+
+        MDLabel:
+            text: "Create a new account"
+            #font_name: "BPoppins"
+            font_size: "18sp"
+            pos_hint: {"center_x": .6, "center_y": .95}
+            halign: "center"
+            color: rgba(135, 133, 193, 255)
+        
+        #First Name
+        MDFloatLayout:
+            
+            size_hint: .7, .07
+            pos_hint: {"center_x": .5, "center_y": .82}
+            TextInput:
+                id: first_name_input
+                hint_text: "First Name"
+                #font_name: "Mpoppins"
+                size_hint_y: .75
+                pos_hint: {"center_x": .43, "center_y": .5}
+                background_color: 1, 1, 1, 0
+                foreground_color: rgba(0, 0, 59, 255)
+                cursor_color: rgba(0,0,59,255)
+                font_size: "14sp"
+                cursor_width: "2sp"
+                multiline: False
+            MDFloatLayout:
+                pos_hint: {"center_x": .45, "center_y" : 0}
+                size_hint_y: .03
+                md_bg_color: rgba(178, 178, 178, 255)
+        
+        #Last Name
+        MDFloatLayout:
+            
+            size_hint: .7, .07
+            pos_hint: {"center_x": .5, "center_y": .74}
+            TextInput:
+                id: last_name_input
+                hint_text: "Last Name"
+                #font_name: "Mpoppins"
+                size_hint_y: .75
+                pos_hint: {"center_x": .43, "center_y": .5}
+                background_color: 1, 1, 1, 0
+                foreground_color: rgba(0, 0, 59, 255)
+                cursor_color: rgba(0,0,59,255)
+                font_size: "14sp"
+                cursor_width: "2sp"
+                multiline: False
+            MDFloatLayout:
+                pos_hint: {"center_x": .45, "center_y" : 0}
+                size_hint_y: .03
+                md_bg_color: rgba(178, 178, 178, 255)
+
+        #Gender
+        MDFloatLayout:
+            id: gender_input
+            size_hint: .7, .07
+            pos_hint: {"center_x": .5, "center_y": .66}
+            TextInput:
+                id: gender_input
+                hint_text: "Gender"
+                #font_name: "Mpoppins"
+                size_hint_y: .75
+                pos_hint: {"center_x": .43, "center_y": .5}
+                background_color: 1, 1, 1, 0
+                foreground_color: rgba(0, 0, 59, 255)
+                cursor_color: rgba(0,0,59,255)
+                font_size: "14sp"
+                cursor_width: "2sp"
+                multiline: False
+            MDFloatLayout:
+                pos_hint: {"center_x": .45, "center_y" : 0}
+                size_hint_y: .03
+                md_bg_color: rgba(178, 178, 178, 255)
+            
+        #School
+        MDFloatLayout:
+            
+            size_hint: .7, .07
+            pos_hint: {"center_x": .5, "center_y": .58}
+            SchoolInput:
+                id: school_input
+                hint_text: "College/University"
+                #font_name: "Mpoppins"
+                size_hint_y: .75
+                pos_hint: {"center_x": .43, "center_y": .5}
+                background_color: 1, 1, 1, 0
+                foreground_color: rgba(0, 0, 59, 255)
+                cursor_color: rgba(0,0,59,255)
+                font_size: "14sp"
+                cursor_width: "2sp"
+                multiline: False
+            MDFloatLayout:
+                pos_hint: {"center_x": .45, "center_y" : 0}
+                size_hint_y: .03
+                md_bg_color: rgba(178, 178, 178, 255)
+        
+                # Date of Birth
+        MDFloatLayout:
+            size_hint: .7, .07
+            pos_hint: {"center_x": .5, "center_y": .50}
+            TextInput:
+                id: dob
+                hint_text: "Date of Birth"
+                size_hint_y: .75
+                pos_hint: {"center_x": .43, "center_y": .5}
+                background_color: 1, 1, 1, 0
+                foreground_color: rgba(0, 0, 59, 255)
+                cursor_color: rgba(0,0,59,255)
+                font_size: "14sp"
+                cursor_width: "2sp"
+                multiline: False
+                readonly: False  # Makes it non-editable; only clickable
+                on_focus: if self.focus: app.show_date_picker_dob(self)
+            
+            MDFloatLayout:
+                pos_hint: {"center_x": .45, "center_y" : 0}
+                size_hint_y: .03
+                md_bg_color: rgba(178, 178, 178, 255)
+
+            
+        #Email
+        MDFloatLayout:
+            size_hint: .7, .07
+            pos_hint: {"center_x": .5, "center_y": .42}
+            TextInput:
+                id: email_input
+                hint_text: "Email"
+                on_text: if not app.validate_email(self.text): self.error = True
+                #font_name: "Mpoppins"
+                size_hint_y: .75
+                pos_hint: {"center_x": .43, "center_y": .5}
+                background_color: 1, 1, 1, 0
+                foreground_color: rgba(0, 0, 59, 255)
+                cursor_color: rgba(0,0,59,255)
+                font_size: "14sp"
+                cursor_width: "2sp"
+                multiline: False
+            MDFloatLayout:
+                pos_hint: {"center_x": .45, "center_y" : 0}
+                size_hint_y: .03
+                md_bg_color: rgba(178, 178, 178, 255)
+        
+        #Password
+        MDFloatLayout:
+            size_hint: .7, .07
+            pos_hint: {"center_x": .5, "center_y": .34}
+            TextInput:
+                id: password_input
+                hint_text: "Password"
+                #font_name: "Mpoppins"
+                size_hint_y: .75
+                pos_hint: {"center_x": .43, "center_y": .5}
+                background_color: 1, 1, 1, 0
+                foreground_color: rgba(0, 0, 59, 255)
+                cursor_color: rgba(0,0,59,255)
+                font_size: "14sp"
+                cursor_width: "2sp"
+                multiline: False
+                password: True
+            MDFloatLayout:
+                pos_hint: {"center_x": .45, "center_y" : 0}
+                size_hint_y: .03
+                md_bg_color: rgba(178, 178, 178, 255)
+        
+        # Confirmation Password
+        MDFloatLayout:
+            size_hint: .7, .07
+            pos_hint: {"center_x": .5, "center_y": .26}
+            TextInput:
+                id: password_confirm_input
+                hint_text: "Password Confirmation"
+                on_text: if not app.validate_password(password_input.text, self.text): self.error = True
+                #font_name: "Mpoppins"
+                size_hint_y: .75
+                pos_hint: {"center_x": .43, "center_y": .5}
+                background_color: 1, 1, 1, 0
+                foreground_color: rgba(0, 0, 59, 255)
+                cursor_color: rgba(0,0,59,255)
+                font_size: "14sp"
+                cursor_width: "2sp"
+                multiline: False
+                password: True
+            MDFloatLayout:
+                pos_hint: {"center_x": .45, "center_y" : 0}
+                size_hint_y: .03
+                md_bg_color: rgba(178, 178, 178, 255)
+
+        MDLabel:
+            id: signup_message_label
+            size_hint_y: None
+            height: "30dp"
+            pos_hint: {'center_x': 0.5, 'top': 0.9}
+            text: ""
+            color: [1, 0, 0, 1]  # Red color for error messages
+
+        MDLabel:
+            id: dob_error_label
+            size_hint_y: None
+            height: "30dp"
+            pos_hint: {'center_x': 0.5, 'top': 0.6}
+            text: ""
+            color: [1, 0, 0, 1]  # Red color for error messages
+
+
+        #Signup Button
+        Button:
+            text: "SIGN UP"
+            size_hint: .66, .065
+            pos_hint: {"center_x": .5, "center_y": .12}
+            background_color: 0, 0, 0, 0
+            #font_name : "Bpoppins"
+            on_release:
+                app.on_signup()
+                
+            canvas.before:
+                Color:
+                    rgb:rgba(52, 0, 231, 255)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [5]
+    
+    
+
+        
+                
+
+
+        
+
+            
+                
+        
+            
