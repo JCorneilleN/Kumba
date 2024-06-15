@@ -476,7 +476,7 @@ class Slope(MDApp):
 
     def send_password_reset_email(self, email):
         try:
-            url = 'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyCu-BIGvFqUqxtUC426FGMVl2SncT_dpF0'
+            url = f'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key={FIREBASE_API_KEY}'
             payload = {
                 'requestType': 'PASSWORD_RESET',
                 'email': email
