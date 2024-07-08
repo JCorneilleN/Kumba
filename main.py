@@ -23,41 +23,50 @@ from kivy.properties import StringProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivymd.uix.card import MDCard
 from kivymd.toast import toast
-from firebase_admin import credentials, firestore, auth
+from firebase_admin import credentials, firestore, auth, initialize_app
 from google.cloud import firestore
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+from kivy.resources import resource_add_path, resource_find
+
 
 
 import csv
-
+import sys
 import threading
 import firebase_admin
 import re 
 import requests
 import os
 
+Logger.info(f'Current working directory: {os.getcwd()}')
 
+# Function to get the path to the credentials file
+def get_credentials_path():
+    if getattr(sys, 'frozen', False):  # If the app is running as a frozen/compiled bundle
+        app_path = sys._MEIPASS  # This is the temporary folder created by PyInstaller
+    else:
+        app_path = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(app_path, 'firebase_credentials.json')
 
-
-# Access environment variables
+# Load environment variables (assuming these are set by setup_env.bat)
 SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
-GOOGLE_APPLICATION_CREDENTIALS_PATH = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
-FIREBASE_CREDENTIALS_PATH = os.getenv('FIREBASE_CREDENTIALS')
 FIREBASE_STORAGE_BUCKET = os.getenv('FIREBASE_STORAGE_BUCKET')
 FIREBASE_API_KEY = os.getenv('FIREBASE_API_KEY')
-os.environ['KIVY_NO_MTDEV'] = '1'
-# Firebase setup
-cred = credentials.Certificate(FIREBASE_CREDENTIALS_PATH)
-firebase_admin.initialize_app(cred, {
+GOOGLE_APPLICATION_CREDENTIALS_PATH = get_credentials_path()
+
+# Initialize Firebase with the credentials file
+cred = credentials.Certificate(GOOGLE_APPLICATION_CREDENTIALS_PATH)
+initialize_app(cred, {
     'storageBucket': FIREBASE_STORAGE_BUCKET
 })
 
+# Initialize Firestore client
 db = firestore.Client()
 
 
 Window.size = (350, 610)
-#Window.borderless = True
+# Window.borderless = True
 
 # Load colleges and universities from CSV file
 colleges = []
@@ -68,6 +77,9 @@ with open(colleges_file, 'r') as file:
     next(reader)  # Skip the header row
     for row in reader:
         colleges.append(row[3])  # Assuming the college name is in the 4th column (index 3)
+
+
+
 
 # Address
 def filter_address(address):
@@ -170,8 +182,8 @@ class SchoolInput(TextInput):
         return super(SchoolInput, self).on_touch_up(touch)
 
 
-# SLope 
-class Slope(MDApp):
+# Kumba 
+class Kumba(MDApp):
     email = StringProperty('No email')
     first_name = StringProperty('No Name')
     last_name = StringProperty('No Last Name')
@@ -186,41 +198,36 @@ class Slope(MDApp):
     current_receiver_name = StringProperty("Unknown")
     current_receiver_id = StringProperty(None)
   
+    
     def build(self):
         self.theme_cls.material_style = "M3"
-       
-        self.screen_manager = ScreenManager()
-        # Load and add screens
-        self.screen_manager.add_widget(Builder.load_file("main.kv"))
-        self.screen_manager.add_widget(Builder.load_file("login.kv"))
-        self.screen_manager.add_widget(Builder.load_file("signup.kv"))
-        self.screen_manager.add_widget(Builder.load_file("reset_password.kv"))
-        self.screen_manager.add_widget(Builder.load_file("welcome.kv"))
-        self.screen_manager.add_widget(Builder.load_file("home.kv"))
-        self.screen_manager.add_widget(Builder.load_file("page.kv"))
-        self.screen_manager.add_widget(Builder.load_file("verify.kv"))
-        self.screen_manager.add_widget(Builder.load_file("driver.kv"))
-
         
-    
+        self.screen_manager = ScreenManager()
+        
+        # Add the directory containing the assets to the resource search path
+        resource_add_path(os.path.join(os.path.dirname(__file__), 'assets'))
+        
+        kv_files = ['main.kv', 'login.kv', 'signup.kv', 'reset_password.kv', 'welcome.kv', 'home.kv', 'page.kv', 'verify.kv', 'driver.kv']
+        for kv_file in kv_files:
+            kv_path = resource_find(kv_file)
+            Logger.info(f'Loading KV file from: {kv_path}')
+            self.screen_manager.add_widget(Builder.load_file(kv_path))
+        
         # Load rides on startup
         self.load_rides()
-        #deleting past rides
+        # Deleting past rides
         self.start_deletion_schedule()
         self.delete_past_rides()
         
-
-         # Schedule loading of chats after the startup sequenc
-    
-        return self.screen_manager
-
-
-    
-    def __init__(self, **kwargs): 
-        super(Slope, self).__init__(**kwargs)
-
-    
+        # Schedule loading of chats after the startup sequence
         
+        return self.screen_manager
+     
+    def __init__(self, **kwargs): 
+        super(Kumba, self).__init__(**kwargs)
+       
+    
+    
 
     #Date picker for date of birth
     def show_date_picker_dob(self, target):
@@ -275,7 +282,6 @@ class Slope(MDApp):
     
 
 
-
     def validate_email(self, email):
         return re.match(r".*@.*\.edu$", email) is not None
 
@@ -317,7 +323,7 @@ class Slope(MDApp):
     
         # Additional checks for email and password
         if not self.validate_email(email):
-            current_screen.ids.signup_message_label.text = "Please use a valid email address."
+            current_screen.ids.signup_message_label.text = "Please use a valid email address. The email needs to be a valid .edu email"
             return
     
         if not self.validate_password(password, current_screen.ids.password_confirm_input.text.strip()):
@@ -751,4 +757,5 @@ class Slope(MDApp):
         self.dialog.open()
 
 if __name__ == "__main__":
-    Slope().run()
+    Kumba().run()
+   
